@@ -1,3 +1,19 @@
+(defn get-banner
+  []
+  (try
+    (str
+      (slurp "resources/text/banner.txt")
+      (slurp "resources/text/loading.txt"))
+    ;; If another project can't find the banner, just skip it;
+    ;; this function is really only meant to be used by Dragon itself.
+    (catch Exception _ "")))
+
+(defn get-prompt
+  [ns]
+  (str "\u001B[35m[\u001B[34m"
+       ns
+       "\u001B[35m]\u001B[33m λ\u001B[m=> "))
+
 (defproject hexagram30/redis-db-plugin "0.1.0-SNAPSHOT"
   :description "A hexagram30 db plugin for Redis"
   :url "https://github.com/hexagram30/redis-db-plugin"
@@ -13,7 +29,7 @@
     [hexagram30/common "0.1.0-SNAPSHOT"]
     [org.clojure/clojure "1.8.0"]]
   :jvm-opts ["-Ddb.backend=redis"]
-  :source-paths ["src"]
+  :source-paths ["src" "dev"]
   :target-path "../../target/%s/"
   :clean-targets ^:replace []
   :profiles {
