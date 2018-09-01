@@ -1,0 +1,11 @@
+{:user {:password-file "~/.hexagram30/graphdb.edn"}
+ :logging {
+   :nss [
+     hxgm30
+     taoensso.carmine]
+   :level :debug}
+ :backend {
+   :plugin :redis
+   :redis {
+     :host "localhost"
+     :port 6379}}}
