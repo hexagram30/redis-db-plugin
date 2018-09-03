@@ -1,39 +1,24 @@
-(ns hxgm30.db.plugin.redis.component
+(ns hxgm30.db.plugin.redis.components.core
   (:require
-    [hxgm30.db.components.config :as config]
+    [com.stuartsierra.component :as component]
     [hxgm30.db.plugin.redis.api.db :as db]
     [hxgm30.db.plugin.redis.api.factory :as factory]
-    [com.stuartsierra.component :as component]
+    [hxgm30.db.plugin.redis.components.config :as config]
     [taoensso.timbre :as log])
   (:import
     (clojure.lang Symbol)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;   Component Dependencies   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;   Constants   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (def component-deps [:config :logging])
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;   Redis Config   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defn redis-host
-  [system]
-  (get-in (config/get-cfg system) [:backend :redis :host]))
-
-(defn redis-port
-  [system]
-  (get-in (config/get-cfg system) [:backend :redis :port]))
+(def db-ns 'hxgm30.db.plugin.redis.api.db)
+(def factory-ns 'hxgm30.db.plugin.redis.api.factory)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;   Redis Component API   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defn get-spec
-  [system]
-  {:host (redis-host system)
-   :port (redis-port system)})
 
 (defn get-conn
   [system]
@@ -49,7 +34,7 @@
   ([system ^Symbol func args]
     (log/trace "Component preparing to call into plugin db API ...")
     (log/tracef "Got system, func, args: %s, %s, %s" system func args)
-    (let [resolved-func (ns-resolve 'hxgm30.graphdb.plugin.redis.api.db func)]
+    (let [resolved-func (ns-resolve db-ns func)]
       (log/trace "Got resolved function:" resolved-func)
       (when (nil? resolved-func)
         (log/error (str "Couldn't find function in given namespace; "
@@ -68,7 +53,7 @@
   ([system ^Symbol func args]
     (log/trace "Component preparing to call into plugin factory API ...")
     (apply
-      (ns-resolve 'hxgm30.graphdb.plugin.redis.api.factory func)
+      (ns-resolve factory-ns func)
       (concat [(get-factory system)] args))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
