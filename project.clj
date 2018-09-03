@@ -21,16 +21,15 @@
     :name "Apache License, Version 2.0"
     :url "http://www.apache.org/licenses/LICENSE-2.0"}
   :dependencies [
-    [aysylu/loom "1.0.1"]
+    [aysylu/loom "1.0.2"]
     [clojusc/dev-system "0.1.0"]
-    [clojusc/trifl "0.2.0"]
-    [clojusc/twig "0.3.2"]
-    [com.taoensso/carmine "2.18.0"]
+    [clojusc/trifl "0.3.0"]
+    [clojusc/twig "0.3.3"]
+    [com.taoensso/carmine "2.18.1"]
     [hexagram30/common "0.1.0-SNAPSHOT"]
-    [org.clojure/clojure "1.8.0"]]
-  :jvm-opts ["-Ddb.backend=redis"]
+    [org.clojure/clojure "1.9.0"]]
+  :jvm-opts ["-Dgraphdb.backend=redis"]
   :source-paths ["src" "dev"]
-  :target-path "../../target/%s/"
   :clean-targets ^:replace []
   :profiles {
     :ubercompile {
@@ -44,7 +43,6 @@
       :plugins [
         [lein-shell "0.5.0"]
         [venantius/ultra "0.5.2"]]
-      :source-paths ["dev-resources/src"]
       :repl-options {
         :init-ns hxgm30.db.plugin.redis.repl
         :prompt ~get-prompt
@@ -61,19 +59,10 @@
         [lein-ancient "0.6.15"]
         [lein-bikeshed "0.5.1"]
         [lein-kibit "0.1.6"]
-        [venantius/yagni "0.1.4"]]}
+        [venantius/yagni "0.1.6"]]}
     :test {
       :plugins [
-        [lein-ltest "0.3.0"]]}
-    :server {
-      :jvm-opts ["-XX:MaxDirectMemorySize=512g"]
-      :main hxgm30.graphdb.server}
-    :redis-plugin {
-      :jvm-opts ["-Ddb.backend=redis"]
-      :source-paths [
-        "plugins/redis/src"
-        "plugins/redis/dev"]
-      :resource-paths ["plugins/redis/resources"]}}
+        [lein-ltest "0.3.0"]]}}
   :aliases {
     ;; Dev Aliases
     "repl" ["do"
@@ -104,14 +93,22 @@
       ["check-vers"]
       ["lint"]
       ["ltest" ":all"]
-      ["uberjar"]
+      ["uberjar"]]
     ;; Plugin
+    "start-graph-db" ["shell"
+      "docker-compose"
+        "-f" "resources/docker/compose-redis-graphdb.yml"
+        "up"]
+    "stop-graph-db" ["shell"
+      "docker-compose"
+        "-f" "resources/docker/compose-redis-graphdb.yml"
+        "down"]
     "start-db" ["shell"
-          "docker-compose"
-            "-f" "plugins/redis/resources/docker/docker-compose-redis-graph.yml"
-            "up"]
+      "docker-compose"
+        "-f" "resources/docker/compose-redis-db.yml"
+        "up"]
     "stop-db" ["shell"
       "docker-compose"
-        "-f" "plugins/redis/resources/docker/docker-compose-redis-graph.yml"
-        "down"]]})
+        "-f" "resources/docker/compose-redis-db.yml"
+        "down"]})
 
