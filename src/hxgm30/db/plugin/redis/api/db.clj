@@ -113,47 +113,14 @@
     [:rpush id dst-id]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;   API Implementation   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;   DB API Implementation   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(load "/hxgm30/graphdb/plugin/protocols/db")
+(load "/hxgm30/db/plugin/protocols/db")
 
-(defrecord RedisGraph [
+(defrecord RedisDB [
   spec
   pool])
-
-(defn- -add-edge
-  ([this src-id dst-id]
-    (-add-edge this src-id dst-id {nil nil}))
-  ([this src-id dst-id attrs]
-    (-add-edge this src-id dst-id nil attrs))
-  ([this src-id dst-id label attrs]
-    (let [edge-id (get-index this :edge)
-          result (pipeline
-                   this
-                   [[:multi]
-                    (create-edge-cmd edge-id label attrs)
-                    (create-relation-cmd this src-id dst-id edge-id)
-                    [:exec]])]
-      {:id edge-id
-       :result result})))
-
-(defn- -add-vertex
-  ([this]
-    (-add-vertex this {nil nil}))
-  ([this attrs]
-    (-add-vertex this nil attrs))
-  ([this label attrs]
-    (let [id (get-index this :vertex)
-          normed-attrs (merge attrs (when label {:label label}))
-          flat-attrs (mapcat vec normed-attrs)
-          result (apply call (concat [this :hmset id] flat-attrs))]
-      {:id id
-       :result result})))
-
-(defn- -add-vertices
-  [this props]
-  :forth-coming)
 
 (defn- -backup
   [this]
@@ -193,6 +160,96 @@
 (defn- -flush
   [this]
   :not-implemented)
+
+(defn- -rollback
+  [this]
+  :not-implemented)
+
+(def db-behaviour
+  {:backup -backup
+   :commit -commit
+   :configuration -configuration
+   :disconnect -disconnect
+   :dump -dump
+   :explain -explain
+   :flush -flush
+   :rollback -rollback})
+
+(extend RedisDB
+        DBAPI
+        db-behaviour)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;   Redis-specific Functions   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defn drop-data
+  [this]
+  (call this :flushdb))
+
+(defn latency-setup
+  ([this]
+    (latency-setup this 100))
+  ([this milliseconds]
+    (call this :config :set "latency-monitor-threshold" milliseconds)))
+
+(defn latency-latest
+  [this]
+  (call this :latency :latest))
+
+(defn latency-doctor
+  [this]
+  (print (call this :latency :doctor))
+  :ok)
+
+(defn slowlog
+  ([this]
+    (call this :slowlog :get))
+  ([this count]
+    (call this :slowlog :get count)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;   GraphDB API Implementation   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(load "/hxgm30/db/plugin/protocols/graphdb")
+
+(defrecord RedisGraphDB [
+  spec
+  pool])
+
+(defn- -add-edge
+  ([this src-id dst-id]
+    (-add-edge this src-id dst-id {nil nil}))
+  ([this src-id dst-id attrs]
+    (-add-edge this src-id dst-id nil attrs))
+  ([this src-id dst-id label attrs]
+    (let [edge-id (get-index this :edge)
+          result (pipeline
+                   this
+                   [[:multi]
+                    (create-edge-cmd edge-id label attrs)
+                    (create-relation-cmd this src-id dst-id edge-id)
+                    [:exec]])]
+      {:id edge-id
+       :result result})))
+
+(defn- -add-vertex
+  ([this]
+    (-add-vertex this {nil nil}))
+  ([this attrs]
+    (-add-vertex this nil attrs))
+  ([this label attrs]
+    (let [id (get-index this :vertex)
+          normed-attrs (merge attrs (when label {:label label}))
+          flat-attrs (mapcat vec normed-attrs)
+          result (apply call (concat [this :hmset id] flat-attrs))]
+      {:id id
+       :result result})))
+
+(defn- -add-vertices
+  [this props]
+  :forth-coming)
 
 (defn- -get-edge
   ([this id]
@@ -259,10 +316,6 @@
   [this]
   (-delete-all this -get-vertices))
 
-(defn- -rollback
-  [this]
-  :not-implemented)
-
 (defn- -show-features
   [this]
   :not-implemented)
@@ -291,17 +344,10 @@
          (map (partial get-vertex this))
          (reduce merge))))
 
-(def behaviour
+(def graphdb-behaviour
   {:add-edge -add-edge
    :add-vertex -add-vertex
-   :backup -backup
-   :commit -commit
-   :configuration -configuration
-   :disconnect -disconnect
-   :dump -dump
    :edges -edges
-   :explain -explain
-   :flush -flush
    :get-edge -get-edge
    :get-edges -get-edges
    :get-index -get-index
@@ -317,39 +363,9 @@
    :remove-relations -remove-relations
    :remove-vertex -remove-vertex
    :remove-vertices -remove-vertices
-   :rollback -rollback
    :show-features -show-features
    :vertices -vertices})
 
-(extend RedisGraph
+(extend RedisGraphDB
         GraphDBAPI
-        behaviour)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;   Non-API Functions   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defn drop-data
-  [this]
-  (call this :flushdb))
-
-(defn latency-setup
-  ([this]
-    (latency-setup this 100))
-  ([this milliseconds]
-    (call this :config :set "latency-monitor-threshold" milliseconds)))
-
-(defn latency-latest
-  [this]
-  (call this :latency :latest))
-
-(defn latency-doctor
-  [this]
-  (print (call this :latency :doctor))
-  :ok)
-
-(defn slowlog
-  ([this]
-    (call this :slowlog :get))
-  ([this count]
-    (call this :slowlog :get count)))
+        graphdb-behaviour)
