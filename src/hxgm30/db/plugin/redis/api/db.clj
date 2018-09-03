@@ -367,5 +367,9 @@
    :vertices -vertices})
 
 (extend RedisGraphDB
+        DBAPI
+        db-behaviour)
+
+(extend RedisGraphDB
         GraphDBAPI
         graphdb-behaviour)
