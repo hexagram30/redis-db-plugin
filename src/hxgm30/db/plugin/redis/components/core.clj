@@ -64,16 +64,16 @@
 
 (defn start
   [this]
-  (log/info "Starting Redis component ...")
-  (let [f (factory/create (get-spec this))
+  (log/info "Starting Redis DB plugin component ...")
+  (let [f (factory/create (config/db-spec this))
         conn (factory/connect f)]
-    (log/debug "Started Redis component.")
+    (log/debug "Started Redis DB plugin component.")
     (assoc this :conn conn)))
 
 (defn stop
   [this]
-  (log/info "Stopping Redis component ...")
-  (log/debug "Stopped Redis component.")
+  (log/info "Stopping Redis DB plugin component ...")
+  (log/debug "Stopped Redis DB plugin component.")
   (assoc this :conn nil))
 
 (def lifecycle-behaviour

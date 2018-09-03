@@ -9,11 +9,14 @@
 
 (defrecord RedisFactory [
   spec
-  pool])
+  pool
+  subtype])
 
 (defn- -connect
   [this]
-  (redis/map->RedisGraph this))
+  (case (:subtype this)
+    :db (redis/map->RedisDB this)
+    :graphdb (redis/map->RedisGraphDB this)))
 
 (defn- -destroy
   [this]
@@ -33,5 +36,6 @@
     (create spec {}))
   ([spec pool]
     (map->RedisFactory
-      {:spec spec
+      {:subtype (:subtype spec)
+       :spec (dissoc spec :subtype)
        :pool pool})))

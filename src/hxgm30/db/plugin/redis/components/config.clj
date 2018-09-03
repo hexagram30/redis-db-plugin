@@ -16,31 +16,29 @@
 ;;;   Config Component API   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defn redis-db-host
+(defn backend-plugin
   [system]
-  (get-in (get-cfg system) [:backend :db :redis :host]))
+  (get-in (get-cfg system) [:backend :plugin]))
 
-(defn redis-db-port
+(defn backend-subtype
   [system]
-  (get-in (get-cfg system) [:backend :db :redis :port]))
+  (get-in (get-cfg system) [:backend :subtype]))
+
+(defn db-host
+  [system]
+  (get-in (get-cfg system)
+          [:backend (backend-subtype system) (backend-plugin system) :host]))
+
+(defn db-port
+  [system]
+  (get-in (get-cfg system)
+          [:backend (backend-subtype system) (backend-plugin system) :port]))
 
 (defn db-spec
   [system]
-  {:host (redis-db-host system)
-   :port (redis-db-port system)})
-
-(defn redis-graphdb-host
-  [system]
-  (get-in (get-cfg system) [:backend :graphdb :redis :host]))
-
-(defn redis-graphdb-port
-  [system]
-  (get-in (get-cfg system) [:backend :graphdb :redis :port]))
-
-(defn graphdb-spec
-  [system]
-  {:host (redis-graphdb-host system)
-   :port (redis-graphdb-port system)})
+  {:subtype (backend-subtype system)
+   :host (db-host system)
+   :port (db-port system)})
 
 (defn log-level
   [system]
@@ -49,10 +47,6 @@
 (defn log-nss
   [system]
   (get-in (get-cfg system) [:logging :nss]))
-
-(defn backend-plugin
-  [system]
-  (get-in (get-cfg system) [:backend :plugin]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;   Component Lifecycle Implementation   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

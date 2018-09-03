@@ -4,13 +4,14 @@
      taoensso.carmine]
    :level :debug}
  :backend {
+   :plugin :redis
+   ;; :subtype :db
+   ;; :subtype :graphdb
    :db {
-     :plugin :redis
      :redis {
        :host "localhost"
        :port 6389}}
    :graphdb {
-     :plugin :redis
      :redis {
        :host "localhost"
        :port 6379}}}}

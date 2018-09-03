@@ -6,10 +6,10 @@
   * https://redis.io/topics/indexes"
   (:require
     [clojure.string :as string]
+    [hxgm30.common.util :as util]
     [hxgm30.db.plugin.redis.api.queries :as queries]
     [hxgm30.db.plugin.redis.api.schema :as schema]
     [hxgm30.db.plugin.redis.api.util :as plugin-util]
-    [hxgm30.db.plugin.util :as util]
     [taoensso.carmine :as redis]
     [taoensso.timbre :as log]
     [trifl.java :refer [uuid4]])
