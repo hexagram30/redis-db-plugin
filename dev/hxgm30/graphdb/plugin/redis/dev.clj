@@ -2,7 +2,10 @@
 ;;;   Supplemental, Backend-specific API   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(log/info "Loading Redis-specific dev namespace ...")
+
 (defn-db find-keys pattern)
+(defn-db info)
 (defn-db latency-doctor)
 (defn-db latency-latest)
 
@@ -31,4 +34,6 @@
   '[loom.io :as loom-io])
 
 (require
-  '[hxgm30.graphdb.plugin.redis.api.queries :as queries])
+  '[hxgm30.db.plugin.redis.api.queries :as queries])
+
+(log/debug "Loaded Redis-specific dev namespace.")
