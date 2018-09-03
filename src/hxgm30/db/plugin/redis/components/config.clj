@@ -16,18 +16,31 @@
 ;;;   Config Component API   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defn redis-host
+(defn redis-db-host
   [system]
-  (get-in (get-cfg system) [:backend :redis :host]))
+  (get-in (get-cfg system) [:backend :db :redis :host]))
 
-(defn redis-port
+(defn redis-db-port
   [system]
-  (get-in (get-cfg system) [:backend :redis :port]))
+  (get-in (get-cfg system) [:backend :db :redis :port]))
 
 (defn db-spec
   [system]
-  {:host (redis-host system)
-   :port (redis-port system)})
+  {:host (redis-db-host system)
+   :port (redis-db-port system)})
+
+(defn redis-graphdb-host
+  [system]
+  (get-in (get-cfg system) [:backend :graphdb :redis :host]))
+
+(defn redis-graphdb-port
+  [system]
+  (get-in (get-cfg system) [:backend :graphdb :redis :port]))
+
+(defn graphdb-spec
+  [system]
+  {:host (redis-graphdb-host system)
+   :port (redis-graphdb-port system)})
 
 (defn log-level
   [system]
