@@ -89,7 +89,7 @@
   [this get-all-fn]
   (->> this
        get-all-fn
-       (map (fn [x] [:del x]))
+       (map :del)
        (pipeline this)
        vec))
 
