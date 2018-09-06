@@ -28,3 +28,7 @@
 (extend RedisLangDB
         LangDBAPI
         lang-behaviour)
+
+(defn create-lang-db
+  [conn]
+  (map->RedisLangDB conn))
