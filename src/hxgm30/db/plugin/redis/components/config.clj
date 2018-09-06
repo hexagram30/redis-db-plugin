@@ -1,7 +1,6 @@
 (ns hxgm30.db.plugin.redis.components.config
   (:require
     [com.stuartsierra.component :as component]
-    [hxgm30.graphdb.config :as config]
     [taoensso.timbre :as log]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
