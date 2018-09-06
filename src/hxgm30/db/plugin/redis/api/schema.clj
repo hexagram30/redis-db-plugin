@@ -28,8 +28,8 @@
 ;;;   Language DB Schemas   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(def lang-stats-tmpl "lang:%s")
-(def name-stats-tmpl "name:%s:%s")
+(def lang-stats-tmpl "lang:stats%s%s")
+(def name-stats-tmpl "name:stats%s%s%s")
 
-(def lang-stats #(format lang-stats-tmpl %))
-(def name-stats #(format lang-stats-tmpl %1 %2))
+(def lang-stats #(format lang-stats-tmpl %1 %2))
+(def name-stats #(format name-stats-tmpl %1 %2 %3))

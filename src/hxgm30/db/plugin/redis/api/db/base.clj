@@ -11,7 +11,7 @@
   (log/trace "Got args:" args)
   (apply redis/redis-call args))
 
-(defn- cmd
+(defn cmd
   [this lib-cmd & args]
   (log/debug "Making carmine call to Redis:" lib-cmd)
   (-> this
@@ -27,7 +27,7 @@
       (redis/wcar (doall (mapcat prepare cmds)))
       (parse-results)))
 
-(defn- call
+(defn call
   [this & args]
   (log/trace "Using 'call' with args:" args)
   (log/tracef "Wrapping args: [%s] ..." args)

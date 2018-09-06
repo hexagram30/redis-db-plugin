@@ -3,18 +3,24 @@
   pool])
 
 (defn -ingest-stats
-  ([this language data]
-    (cmd :set (schema/lang-stats language) data))
-  ([this race-name name-type data]
-    (cmd :get (schema/name-stats race-name name-type) data)))
+  ([this language gen-type data]
+    (cmd this
+         redis/set
+         (schema/lang-stats language gen-type)
+         data))
+  ([this race-name name-type gen-type data]
+    (cmd this
+         redis/set
+         (schema/name-stats race-name name-type gen-type)
+         data)))
 
 (defn -lang-stats
-  [this language]
-  (cmd :get (schema/lang-stats language)))
+  [this language gen-type]
+  (cmd this redis/get (schema/lang-stats language gen-type)))
 
 (defn -name-stats
-  [this race-name name-type]
-  (cmd :get (schema/name-stats race-name name-type)))
+  [this race-name name-type gen-type]
+  (cmd this redis/get (schema/name-stats race-name name-type gen-type)))
 
 (def lang-behaviour
   {:ingest-stats -ingest-stats
