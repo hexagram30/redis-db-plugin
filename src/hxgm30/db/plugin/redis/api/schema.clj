@@ -20,14 +20,16 @@
 (def relation-tmpl "adjc:%s")
 (def vertex-tmpl "node:%s")
 
-(defn edge
-  [id]
-  (format edge-tmpl id))
+(def edge #(format edge-tmpl %))
+(def relation #(format relation-tmpl %))
+(def vertex #(format vertex-tmpl %))
 
-(defn relation
-  [id]
-  (format relation-tmpl id))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;   Language DB Schemas   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defn vertex
-  [id]
-  (format vertex-tmpl id))
+(def lang-stats-tmpl "lang:%s")
+(def name-stats-tmpl "name:%s:%s")
+
+(def lang-stats #(format lang-stats-tmpl %))
+(def name-stats #(format lang-stats-tmpl %1 %2))

@@ -20,6 +20,7 @@
     (-get-index this data-type (uuid4)))
   ([this data-type id]
     (case data-type
+      ;; GraphDB
       :edge (schema/edge id)
       :relation (schema/relation id)
       :vertex (schema/vertex id))))
