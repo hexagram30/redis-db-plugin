@@ -34,3 +34,9 @@
 
         (= 3 (count args))
         (apply name-stats args)))
+
+(def dictionary-entry-tmpl "dictionary:entry%s%s")
+
+(defn dictionary-entry
+  [language word]
+  (format dictionary-entry-tmpl language word))
