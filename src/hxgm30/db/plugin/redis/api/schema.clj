@@ -1,16 +1,4 @@
-(ns hxgm30.db.plugin.redis.api.schema
-  "Schema setup for graph data.
-
-  Adding a node:
-    HMSET node:UUID KEY1 VAL1 [KEY2 VAL2 [...]]
-
-  Adding an edge:
-    HMSET edge:UUID KEY1 VAL1 [KEY2 VAL2 [...]]
-
-  Adding a relation:
-    RPUSH adjc:UUID [UUID1 [UUID2 [...]]
-
-    ")
+(ns hxgm30.db.plugin.redis.api.schema)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;   Graph DB Schemas   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -31,8 +19,13 @@
 (def lang-stats-tmpl "lang:stats%s%s")
 (def name-stats-tmpl "name:stats%s%s%s")
 
-(def lang-stats #(format lang-stats-tmpl %1 %2))
-(def name-stats #(format name-stats-tmpl %1 %2 %3))
+(defn lang-stats
+  [language generator-type]
+  (format lang-stats-tmpl language generator-type))
+
+(defn name-stats
+  [race-name name-type generator-type]
+  (format name-stats-tmpl race-name name-type generator-type))
 
 (defn stats
   [args]
