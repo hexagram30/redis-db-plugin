@@ -33,3 +33,11 @@
 
 (def lang-stats #(format lang-stats-tmpl %1 %2))
 (def name-stats #(format name-stats-tmpl %1 %2 %3))
+
+(defn stats
+  [args]
+  (cond (= 2 (count args))
+        (apply lang-stats args)
+
+        (= 3 (count args))
+        (apply name-stats args)))

@@ -3,6 +3,9 @@
   pool])
 
 (defn -ingest-stats
+  ([this data]
+    (pipeline this
+              (mapv (fn [[args stats]] [:set (schema/stats args) stats]) data)))
   ([this language gen-type data]
     (cmd this
          redis/set

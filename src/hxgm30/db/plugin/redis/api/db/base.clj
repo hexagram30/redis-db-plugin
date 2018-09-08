@@ -12,6 +12,10 @@
   (apply redis/redis-call args))
 
 (defn cmd
+  "Usage example:
+  ```
+  (cmd db-instance redis/set :a 1)
+  ```"
   [this lib-cmd & args]
   (log/debug "Making carmine call to Redis:" lib-cmd)
   (-> this
@@ -19,7 +23,11 @@
       (redis/wcar (apply lib-cmd args))
       (parse-results)))
 
-(defn- pipeline
+(defn pipeline
+  "Usage example:
+  ```
+  (pipeline db-instance [[:set :a 2] [:set :b 3] [:set :c 4] [:set :d 5]])
+  ```"
   [this & cmds]
   (log/debug "Making call(s) to Redis:" cmds)
   (-> this
