@@ -1,6 +1,7 @@
 (ns hxgm30.db.plugin.redis.api.factory
   (:require
-    [hxgm30.db.plugin.redis.api.db :as redis])
+    [hxgm30.db.plugin.redis.api.db :as redis]
+    [taoensso.timbre :as log])
   (:import
     (clojure.lang Keyword))
   (:refer-clojure :exclude [drop]))
@@ -14,6 +15,7 @@
 
 (defn- -connect
   [this]
+  (log/debugf "Connecting (with subtype %s) ..." (:subtype this))
   (case (:subtype this)
     :db (redis/map->RedisDB this)
     :graphdb (redis/map->RedisGraphDB this)))
