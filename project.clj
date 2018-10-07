@@ -25,8 +25,9 @@
     [clojusc/dev-system "0.1.0"]
     [clojusc/trifl "0.3.0"]
     [clojusc/twig "0.3.3"]
-    [com.taoensso/carmine "2.18.1"]
+    [com.taoensso/carmine "2.19.0"]
     [hexagram30/common "0.1.0-SNAPSHOT"]
+    [hexagram30/db-plugin "0.1.0-SNAPSHOT"]
     [org.clojure/clojure "1.9.0"]]
   :jvm-opts ["-Dgraphdb.backend=redis"]
   :source-paths ["src" "dev"]
@@ -55,7 +56,7 @@
       :source-paths ^:replace ["src"]
       :test-paths ^:replace []
       :plugins [
-        [jonase/eastwood "0.2.9"]
+        [jonase/eastwood "0.3.1"]
         [lein-ancient "0.6.15"]
         [lein-bikeshed "0.5.1"]
         [lein-kibit "0.1.6"]
@@ -91,6 +92,7 @@
     "build" ["do"
       ["clean"]
       ["check-vers"]
+      ["ubercompile"]
       ["lint"]
       ["ltest" ":all"]
       ["uberjar"]]
