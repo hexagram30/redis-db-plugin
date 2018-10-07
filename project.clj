@@ -38,8 +38,6 @@
   :jvm-opts ["-Dgraphdb.backend=redis"
              "-Ddb.backend=redis"]
   :source-paths ["src" "dev"]
-  :clean-targets ^:replace []
-  ;:aot [hxgm30.db.plugin.protocols]
   :profiles {
     :ubercompile {
       :aot :all}
