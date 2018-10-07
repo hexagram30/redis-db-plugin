@@ -40,3 +40,13 @@
 (defn dictionary-entry
   [language word]
   (format dictionary-entry-tmpl language word))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;   Session DB Schemas   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(def user-session-tmpl "session:user%s")
+
+(defn user-session
+  [id]
+  (format user-session-tmpl id))

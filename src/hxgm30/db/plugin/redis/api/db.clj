@@ -49,3 +49,10 @@
 
 (load "/hxgm30/db/plugin/protocols/langdb")
 (load "/hxgm30/db/plugin/redis/api/db/lang")
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;  SessionDB API Implementation   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(load "/hxgm30/db/plugin/protocols/sessiondb")
+(load "/hxgm30/db/plugin/redis/api/db/session")
