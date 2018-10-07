@@ -20,18 +20,26 @@
   :license {
     :name "Apache License, Version 2.0"
     :url "http://www.apache.org/licenses/LICENSE-2.0"}
+  :exclusions [;; for jar-file-collisions
+    [com.taoensso/encore]
+    [io.aviso/pretty]]
   :dependencies [
     [aysylu/loom "1.0.2"]
-    [clojusc/dev-system "0.1.0"]
-    [clojusc/trifl "0.3.0"]
-    [clojusc/twig "0.3.3"]
+    [clojusc/system-manager "0.3.0-SNAPSHOT"]
+    [clojusc/trifl "0.4.0"]
+    [clojusc/twig "0.4.0"]
     [com.taoensso/carmine "2.19.0"]
     [hexagram30/common "0.1.0-SNAPSHOT"]
     [hexagram30/db-plugin "0.1.0-SNAPSHOT"]
-    [org.clojure/clojure "1.9.0"]]
-  :jvm-opts ["-Dgraphdb.backend=redis"]
+    [org.clojure/clojure "1.9.0"]
+    ;; The following address jar-file-collisions
+    [com.taoensso/encore "2.99.0"]
+    [io.aviso/pretty "0.1.33"]]
+  :jvm-opts ["-Dgraphdb.backend=redis"
+             "-Ddb.backend=redis"]
   :source-paths ["src" "dev"]
   :clean-targets ^:replace []
+  ;:aot [hxgm30.db.plugin.protocols]
   :profiles {
     :ubercompile {
       :aot :all}
@@ -40,12 +48,13 @@
         org.clojure/tools.namespace]
       :dependencies [
         [clojusc/trifl "0.3.0"]
-        [org.clojure/tools.namespace "0.2.11"]]
+        ;[org.clojure/tools.namespace "0.2.11"]
+        ]
       :plugins [
         [lein-shell "0.5.0"]
         [venantius/ultra "0.5.2"]]
       :repl-options {
-        :init-ns hxgm30.db.plugin.redis.repl
+        ;:init-ns hxgm30.db.plugin.redis.repl
         :prompt ~get-prompt
         :init ~(println (get-banner))}}
     :lint {
