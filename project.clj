@@ -33,8 +33,8 @@
     [hexagram30/db-plugin "0.1.0-SNAPSHOT"]
     [org.clojure/clojure "1.9.0"]
     ;; The following address jar-file-collisions
-    [com.taoensso/encore "2.99.0"]
-    [io.aviso/pretty "0.1.33"]]
+    [com.taoensso/encore "2.100.0"]
+    [io.aviso/pretty "0.1.35"]]
   :jvm-opts ["-Dgraphdb.backend=redis"
              "-Ddb.backend=redis"]
   :source-paths ["src" "dev"]
@@ -45,9 +45,7 @@
       :exclusions [
         org.clojure/tools.namespace]
       :dependencies [
-        [clojusc/trifl "0.3.0"]
-        ;[org.clojure/tools.namespace "0.2.11"]
-        ]
+        [org.clojure/tools.namespace "0.2.11"]]
       :plugins [
         [lein-shell "0.5.0"]
         [venantius/ultra "0.5.2"]]
