@@ -2,13 +2,13 @@
   [spec
    pool])
 
-(defn -id
+(defn -session-id
   [this user-id]
   (-> this
       (cmd redis/get (schema/user-session user-id))
       :id))
 
-(defn -type
+(defn -session-type
   [this user-id]
   (-> this
       (cmd redis/get (schema/user-session user-id))
@@ -26,7 +26,7 @@
       (cmd redis/get (schema/user-session user-id))
       :authenticated?))
 
-(defn -user-data
+(defn -session-user-data
   [this user-id]
   (-> this
       (cmd redis/get (schema/user-session user-id))
@@ -44,7 +44,13 @@
       -shell-stack
       first))
 
-(defn -update
+(defn -get-session
+  [this user-id]
+  (cmd this
+       redis/get
+       (schema/user-session user-id)))
+
+(defn -update-session
   [this user-id data]
   (cmd this
        redis/set
@@ -52,14 +58,15 @@
        data))
 
 (def session-behaviour
-  {:id -id
-   :type -type
+  {:session-id -session-id
+   :session-type -session-type
    :login-attempts -login-attempts
    :authenticated? -authenticated?
-   :user-data -user-data
+   :session-user-data -session-user-data
    :shell-stack -shell-stack
    :current-shell -current-shell
-   :update -update})
+   :get-session -get-session
+   :update-session -update-session})
 
 (extend RedisSessionDB
         DBAPI

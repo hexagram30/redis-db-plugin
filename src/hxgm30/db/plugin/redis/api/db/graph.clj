@@ -21,9 +21,9 @@
 ;;;   Core Implementation   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defrecord RedisGraphDB [
-  spec
-  pool])
+(defrecord RedisGraphDB
+  [spec
+   pool])
 
 (defn- -add-edge
   ([this src-id dst-id]

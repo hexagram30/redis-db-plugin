@@ -1,6 +1,6 @@
-(defrecord RedisDB [
-  spec
-  pool])
+(defrecord RedisDB
+  [spec
+   pool])
 
 (defn- -backup
   [this]

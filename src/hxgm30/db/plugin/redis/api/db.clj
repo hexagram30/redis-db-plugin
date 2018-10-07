@@ -1,9 +1,7 @@
 (ns hxgm30.db.plugin.redis.api.db
-  "Items of interest for implementors:
-
-  * https://github.com/aysylu/loom
-  * http://www.vldb.org/pvldb/1/1453965.pdf (Hexastore)
-  * https://redis.io/topics/indexes"
+  "Note that protocols are loaded as files so that this namespace may be used
+  as an API for the Redis plugin (i.e., as if the protocols have been defined
+  in this namespace)."
   (:require
     [clojure.string :as string]
     [hxgm30.common.util :as util]
@@ -13,7 +11,7 @@
     [taoensso.carmine :as redis]
     [taoensso.timbre :as log]
     [trifl.java :refer [uuid4]])
-  (:refer-clojure :exclude [flush]))
+  (:refer-clojure :exclude [drop flush]))
 
 (declare get-index)
 
@@ -24,10 +22,18 @@
 (load "/hxgm30/db/plugin/redis/api/db/base")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;   DB API Implementation   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;   API Protocols   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (load "/hxgm30/db/plugin/protocols/db")
+(load "/hxgm30/db/plugin/protocols/graphdb")
+(load "/hxgm30/db/plugin/protocols/langdb")
+(load "/hxgm30/db/plugin/protocols/sessiondb")
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;   DB API Implementation   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (load "/hxgm30/db/plugin/redis/api/db/core")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -40,19 +46,16 @@
 ;;;   GraphDB API Implementation   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(load "/hxgm30/db/plugin/protocols/graphdb")
 (load "/hxgm30/db/plugin/redis/api/db/graph")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;  LangDB API Implementation   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(load "/hxgm30/db/plugin/protocols/langdb")
 (load "/hxgm30/db/plugin/redis/api/db/lang")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;  SessionDB API Implementation   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(load "/hxgm30/db/plugin/protocols/sessiondb")
 (load "/hxgm30/db/plugin/redis/api/db/session")
