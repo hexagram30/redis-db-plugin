@@ -25,16 +25,16 @@
     [io.aviso/pretty]]
   :dependencies [
     [aysylu/loom "1.0.2"]
-    [clojusc/system-manager "0.3.0-SNAPSHOT"]
-    [clojusc/trifl "0.4.0"]
+    [clojusc/system-manager "0.3.0"]
+    [clojusc/trifl "0.4.2"]
     [clojusc/twig "0.4.0"]
-    [com.taoensso/carmine "2.19.0"]
+    [com.taoensso/carmine "2.19.1"]
     [hexagram30/common "0.1.0-SNAPSHOT"]
     [hexagram30/db-plugin "0.1.0-SNAPSHOT"]
-    [org.clojure/clojure "1.9.0"]
+    [org.clojure/clojure "1.10.0"]
     ;; The following address jar-file-collisions
-    [com.taoensso/encore "2.100.0"]
-    [io.aviso/pretty "0.1.35"]]
+    [com.taoensso/encore "2.105.0"]
+    [io.aviso/pretty "0.1.36"]]
   :jvm-opts ["-Dgraphdb.backend=redis"
              "-Ddb.backend=redis"]
   :source-paths ["src" "dev"]
@@ -61,11 +61,11 @@
       :source-paths ^:replace ["src"]
       :test-paths ^:replace []
       :plugins [
-        [jonase/eastwood "0.3.1"]
+        [jonase/eastwood "0.3.4"]
         [lein-ancient "0.6.15"]
         [lein-bikeshed "0.5.1"]
         [lein-kibit "0.1.6"]
-        [venantius/yagni "0.1.6"]]}
+        [venantius/yagni "0.1.7"]]}
     :test {
       :plugins [
         [lein-ltest "0.3.0"]]}}
